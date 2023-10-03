@@ -1,8 +1,8 @@
-
 import 'dart:io';
 
+import 'package:bpp_shop/screens/demo_seller.dart';
 import 'package:bpp_shop/screens/home_demo.dart';
-import 'package:bpp_shop/screens/Demo/seller_registration.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
@@ -17,8 +17,6 @@ class ImageRegistration extends StatefulWidget {
 }
 
 class _ImageRegistrationState extends State<ImageRegistration> {
-
-
   bool? ischecked = false;
   bool value = false;
   File? _imagePath;
@@ -31,53 +29,55 @@ class _ImageRegistrationState extends State<ImageRegistration> {
 
   final picker = ImagePicker();
 
-  Future<void> _pickImage( double expectedAspectRatio) async {
+  Future<void> _pickImage(double expectedAspectRatio) async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       final File imageFile = File(pickedFile.path);
       final img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
 
       if (image != null) {
-        final double aspectRatio = image.width.toDouble() / image.height.toDouble();
+        final double aspectRatio =
+            image.width.toDouble() / image.height.toDouble();
         if (aspectRatio == expectedAspectRatio) {
           setState(() {
             _imagePath = imageFile;
             _selectedFileName = pickedFile.name;
           });
         } else {
-          _showAlertDialog(
-              'Invalid Aspect Ratio', 'Please select an image with the  aspect ratio of "1".');
+          _showAlertDialog('Invalid Aspect Ratio',
+              'Please select an image with the  aspect ratio of "1".');
         }
       } else {
-        _showAlertDialog('Invalid Image', 'The selected file is not a valid image.');
+        _showAlertDialog(
+            'Invalid Image', 'The selected file is not a valid image.');
       }
     }
   }
 
-  Future<void> _pickLogo( double expectedAspectRatio) async {
+  Future<void> _pickLogo(double expectedAspectRatio) async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       final File imageFile = File(pickedFile.path);
       final img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
 
       if (image != null) {
-        final double aspectRatio = image.width.toDouble() / image.height.toDouble();
+        final double aspectRatio =
+            image.width.toDouble() / image.height.toDouble();
         if (aspectRatio == expectedAspectRatio) {
           setState(() {
             _logoPath = imageFile;
             _selectedLogoName = pickedFile.name;
           });
         } else {
-          _showAlertDialog(
-              'Invalid Aspect Ratio', 'Please select an image with the  aspect ratio of "6:1".');
+          _showAlertDialog('Invalid Aspect Ratio',
+              'Please select an image with the  aspect ratio of "6:1".');
         }
       } else {
-        _showAlertDialog('Invalid Image', 'The selected file is not a valid image.');
+        _showAlertDialog(
+            'Invalid Image', 'The selected file is not a valid image.');
       }
     }
   }
-
-
 
   void _showAlertDialog(String title, String message) {
     showDialog(
@@ -109,14 +109,8 @@ class _ImageRegistrationState extends State<ImageRegistration> {
         ClipPath(
           clipper: CustomClipperImage(),
           child: Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               color: Color(0xffffffff)),
         ),
         Container(
@@ -133,21 +127,15 @@ class _ImageRegistrationState extends State<ImageRegistration> {
               Container(
                 //alignment: Alignment.center,
                 margin:
-                EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+                    EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
                 //padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
                 // color: Colors.white,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.82,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                height: MediaQuery.of(context).size.height * 0.82,
+                width: MediaQuery.of(context).size.width,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -180,22 +168,21 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                             ),
                             child: _imagePath != null
                                 ? ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.file(
-                                _imagePath!,
-                                //height: 400,
-                                //width: 400,
-                                fit: BoxFit.cover,
-                              ),
-                            )
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      _imagePath!,
+                                      //height: 400,
+                                      //width: 400,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
                                 : Image.network(
-                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU"),
+                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU"),
                           ),
                           Container(
                             height: 120,
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   alignment: Alignment.center,
@@ -215,17 +202,15 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                       fixedSize: Size(200, 30),
                                       backgroundColor: Colors.grey,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            10),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
-                                    onPressed: () =>
-                                    {
-                                      // getImage(
-                                      //   ImageSource.gallery,
-                                      // ),
-                                      _pickImage(1.0),
-                                    },
+                                    onPressed: () => {
+                                          // getImage(
+                                          //   ImageSource.gallery,
+                                          // ),
+                                          _pickImage(1.0),
+                                        },
                                     child: Text('Browse'))
                               ],
                             ),
@@ -245,18 +230,18 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                         width: double.infinity,
                         child: _logoPath != null
                             ? ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            _logoPath!,
-                            //height: 400,
-                            //width: 400,
-                            fit: BoxFit.cover,
-                          ),
-                        )
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.file(
+                                  _logoPath!,
+                                  //height: 400,
+                                  //width: 400,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
                             : Image.network(
-                          "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
-                          fit: BoxFit.cover,
-                        ),
+                                "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       SizedBox(
                         height: 10,
@@ -264,7 +249,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                       Container(
                         alignment: Alignment.center,
                         padding:
-                        EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         width: 400,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
@@ -287,11 +272,10 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            onPressed: () =>
-                            {
-                              // getLogo(ImageSource.gallery),
-                              _pickLogo(6.0),
-                            },
+                            onPressed: () => {
+                                  // getLogo(ImageSource.gallery),
+                                  _pickLogo(6.0),
+                                },
                             child: Text('Browse')),
                       ),
                       Container(
@@ -434,7 +418,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SellerRegistration()));
+                                                DemoSeller()));
                                   },
                                   child: Text(
                                     'Terms and Condition',
@@ -459,8 +443,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                 borderRadius: BorderRadius.circular(10)),
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      SellerRegistration()));
+                                  builder: (context) => DemoSeller()));
                             },
                             child: Text(
                               "Back",
@@ -507,8 +490,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                           InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        SellerRegistration()));
+                                    builder: (context) => DemoSeller()));
                               },
                               child: Text(
                                 'Login',

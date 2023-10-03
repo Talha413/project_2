@@ -1,9 +1,9 @@
-import 'package:bpp_shop/screens/Demo/ClipPath.dart';
-import 'package:bpp_shop/screens/Demo/Sign_Up_Page.dart';
+
 import 'package:bpp_shop/screens/demo_seller.dart';
-import 'package:bpp_shop/screens/Demo/seller_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+
+import '../widgets/CustomClipper.dart';
 
 class HomeDemo extends StatefulWidget {
   const HomeDemo({super.key});

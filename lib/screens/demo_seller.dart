@@ -1,7 +1,9 @@
-import 'package:bpp_shop/screens/Demo/ClipPath.dart';
+
 import 'package:bpp_shop/screens/image_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+
+import '../widgets/CustomClipper.dart';
 
 class DemoSeller extends StatefulWidget {
   const DemoSeller({super.key});
@@ -55,6 +57,7 @@ class _DemoSellerState extends State<DemoSeller> {
   String cityDistrict = '';
   String upoZila = '';
   String areaWord = '';
+  String shopAdress="";
 
   String firstNameError = '';
   String lastNameError = '';
@@ -64,6 +67,8 @@ class _DemoSellerState extends State<DemoSeller> {
   String cityDistrictError = '';
   String upoZilaError = '';
   String areaWordError = '';
+  String shopAdressError="";
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +116,7 @@ class _DemoSellerState extends State<DemoSeller> {
                         horizontal: _width / 36, vertical: _height / 60),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.greenAccent,
+                      color: Colors.white,
                     ),
                     child: Form(
                       key: _formKey,
@@ -799,8 +804,25 @@ class _DemoSellerState extends State<DemoSeller> {
                                       borderSide: BorderSide(
                                         color: Colors.red,
                                       ))),
+                              onChanged: (value) {
+                                setState(() {
+                                  shopAdress = value;
+                                  shopAdressError = '';
+                                });
+                                _validateShopAdress();
+                              },
                             ),
                           ),
+                          if (shopAdressError.isNotEmpty)
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  shopAdressError,
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: _width / 26,
+                                      fontWeight: FontWeight.bold),
+                                )),
                           // SizedBox(
                           //   height: _height * 0.002,
                           // ),
@@ -883,7 +905,7 @@ class _DemoSellerState extends State<DemoSeller> {
       });
     } else if (!_isValidFirstName(firstName)) {
       setState(() {
-        firstNameError = 'Please enter valid name';
+        firstNameError = 'Please enter a real name';
       });
     }
   }
@@ -901,7 +923,7 @@ class _DemoSellerState extends State<DemoSeller> {
       });
     } else if (!_isValidLastName(lastName)) {
       setState(() {
-        lastNameError = 'Please enter a valid name';
+        lastNameError = 'Please enter a real name';
       });
     }
   }
@@ -939,13 +961,13 @@ class _DemoSellerState extends State<DemoSeller> {
       });
     } else if (!_isValidPhone(phone)) {
       setState(() {
-        phoneError = 'Please enter a valid email address';
+        phoneError = 'Must be Starts with 01 or +880 ';
       });
     }
   }
 
   bool _isValidShopName(String shopName) {
-    final namePattern = RegExp(r'^[A-Za-z\s]{3,50}$');
+    final namePattern = RegExp(r'^[A-Za-z\s]{4,50}$');
 
     return namePattern.hasMatch(shopName);
   }
@@ -953,12 +975,31 @@ class _DemoSellerState extends State<DemoSeller> {
   void _validateShopName() {
     if (shopName.isEmpty) {
       setState(() {
-        shopNameError = 'Please enter your name';
+        shopNameError = 'Please enter your  shop name';
       });
     } else if (!_isValidFirstName(firstName)) {
       setState(() {
-        shopNameError = 'Please enter your name';
+        shopNameError = 'Must be minimum four letter';
       });
     }
   }
+
+  bool _isValidShopAdress(String shopAdress) {
+    final namePattern = RegExp(r'^[a-zA-Z0-9\s.,#\-]+$ ');
+
+    return namePattern.hasMatch(shopAdress);
+  }
+
+  void _validateShopAdress() {
+    if (shopAdress.isEmpty) {
+      setState(() {
+        shopAdressError = 'Please enter your shop adress';
+      });
+    } else if (!_isValidFirstName(firstName)) {
+      setState(() {
+        shopAdressError = '';
+      });
+    }
+  }
+
 }

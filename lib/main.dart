@@ -1,7 +1,5 @@
-import 'package:bpp_shop/screens/Demo/two.dart';
 import 'package:bpp_shop/screens/home_demo.dart';
 import 'package:bpp_shop/screens/image_registration.dart';
-import 'package:bpp_shop/screens/Demo/seller_registration.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +12,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -25,4 +22,4 @@ class MyApp extends StatelessWidget {
         home: HomeDemo());
   }
 }
-//...........
+

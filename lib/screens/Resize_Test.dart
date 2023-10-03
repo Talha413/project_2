@@ -1,7 +1,9 @@
-import 'package:bpp_shop/screens/Demo/ClipPath.dart';
+
 import 'package:bpp_shop/screens/image_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+
+import '../widgets/CustomClipper.dart';
 
 void main() {
   runApp(const MyApp());
