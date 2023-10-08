@@ -2,12 +2,16 @@ import 'dart:io';
 
 import 'package:bpp_shop/screens/demo_seller.dart';
 import 'package:bpp_shop/screens/home_demo.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 
 import '../widgets/CustomClipper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_cropper/image_cropper.dart';
+
 
 class ImageRegistration extends StatefulWidget {
   const ImageRegistration({super.key});
@@ -17,6 +21,11 @@ class ImageRegistration extends StatefulWidget {
 }
 
 class _ImageRegistrationState extends State<ImageRegistration> {
+
+  XFile? _pickedFile;
+  CroppedFile? _croppedFile;
+
+
   bool? ischecked = false;
   bool value = false;
   File? _imagePath;
@@ -29,8 +38,8 @@ class _ImageRegistrationState extends State<ImageRegistration> {
 
   final picker = ImagePicker();
 
-  Future<void> _pickImage(double expectedAspectRatio) async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(double expectedAspectRatio,var sources) async {
+    final pickedFile = await picker.pickImage(source: sources);
     if (pickedFile != null) {
       final File imageFile = File(pickedFile.path);
       final img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
@@ -53,30 +62,128 @@ class _ImageRegistrationState extends State<ImageRegistration> {
       }
     }
   }
-
-  Future<void> _pickLogo(double expectedAspectRatio) async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> _uploadImage() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      final File imageFile = File(pickedFile.path);
-      final img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
+      setState(() {
+        _pickedFile = pickedFile;
+      });
+    }
+  }
+  // Future<void> _pickLogo(double expectedAspectRatio,var source) async {
+  //   final pickedFile = await picker.pickImage(source: source);
+  //   _cropImage(pickedFile!.path);
+  //
+  // }
 
-      if (image != null) {
-        final double aspectRatio =
-            image.width.toDouble() / image.height.toDouble();
-        if (aspectRatio == expectedAspectRatio) {
-          setState(() {
-            _logoPath = imageFile;
-            _selectedLogoName = pickedFile.name;
-          });
-        } else {
-          _showAlertDialog('Invalid Aspect Ratio',
-              'Please select an image with the  aspect ratio of "6:1".');
-        }
-      } else {
-        _showAlertDialog(
-            'Invalid Image', 'The selected file is not a valid image.');
+  // Future<void> _pickLogo(double expectedAspectRatio,var source) async {
+  //   final pickedFile = await picker.pickImage(source: source);
+  //   // if(pickedFile!= null){
+  //   //   setState(() {
+  //   //     _pickedFile = pickedFile;
+  //   //     _cropImage();
+  //   //   });
+  //   // }
+  //   if (pickedFile != null) {
+  //     final File imageFile = File(pickedFile.path);
+  //     final img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
+  //
+  //     if (image != null) {
+  //       final double aspectRatio =
+  //           image.width.toDouble() / image.height.toDouble();
+  //       if (aspectRatio == expectedAspectRatio) {
+  //         setState(() {
+  //           _logoPath = imageFile;
+  //           _selectedLogoName = pickedFile.name;
+  //         });
+  //       } else {
+  //         _showAlertDialog('Invalid Aspect Ratio',
+  //             'Please select an image with the  aspect ratio of "6:1".');
+  //       }
+  //     } else {
+  //       _showAlertDialog(
+  //           'Invalid Image', 'The selected file is not a valid image.');
+  //     }
+  //   }
+  // }
+  // Future<void>_cropImage(filePath)async{
+  //   CroppedFile? cropedImage= await ImageCropper().cropImage(sourcePath: filePath,maxWidth: 1080,maxHeight: 1080);
+  //   if(cropedImage!= null){
+  //     setState(() {
+  //       imageFile =cropedImage as File;
+  //     });
+  //   }
+  //
+  // }
+  Future<void> _cropImage() async {
+    if (_pickedFile != null) {
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: _pickedFile!.path,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 100,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+          WebUiSettings(
+            context: context,
+            presentStyle: CropperPresentStyle.dialog,
+            boundary: const CroppieBoundary(
+              width: 520,
+              height: 520,
+            ),
+            viewPort:
+            const CroppieViewPort(width: 480, height: 480, type: 'circle'),
+            enableExif: true,
+            enableZoom: true,
+            showZoomer: true,
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        setState(() {
+          _croppedFile = croppedFile;
+        });
       }
     }
+  }
+  Future showOptions() async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text('Photo Gallery'),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from gallery
+              //getImageFromGallery();
+              _pickImage(1.0,ImageSource.gallery);
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text('Camera'),
+            onPressed: () {
+              // close the options modal
+
+              Navigator.of(context).pop();
+              // get image from camera
+              //getImageFromCamera();
+
+               // _pickLogo(6.0,ImageSource.camera);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   void _showAlertDialog(String title, String message) {
@@ -101,6 +208,8 @@ class _ImageRegistrationState extends State<ImageRegistration> {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xfff3f3f3),
@@ -117,9 +226,17 @@ class _ImageRegistrationState extends State<ImageRegistration> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'BPPSHOP_Image',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              // Text(
+              //   'BPPSHOP_Image',
+              //   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              // ),
+              SizedBox(
+                height: _height * (20 / 600),
+              ),
+              Image.asset(
+                'images/bpp shop logo 01.896abfc13589245ecc62.png',
+                height: _height*(30/600),
+                // width: 140,
               ),
               SizedBox(
                 height: 3,
@@ -176,8 +293,17 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                       fit: BoxFit.cover,
                                     ),
                                   )
-                                : Image.network(
-                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU"),
+                                :
+                            CachedNetworkImage(
+                              imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU",
+                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                  CircularProgressIndicator(value: downloadProgress.progress
+                                  ),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            ),
+
+                            // Image.network(
+                            //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU"),
                           ),
                           Container(
                             height: 120,
@@ -209,7 +335,8 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                           // getImage(
                                           //   ImageSource.gallery,
                                           // ),
-                                          _pickImage(1.0),
+                                          //_pickImage(1.0),
+                                         showOptions(),
                                         },
                                     child: Text('Browse'))
                               ],
@@ -238,10 +365,18 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : Image.network(
-                                "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
-                                fit: BoxFit.cover,
-                              ),
+                            :CachedNetworkImage(
+                          imageUrl:"https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              CircularProgressIndicator(value: downloadProgress.progress),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
+
+
+                        // Image.network(
+                        //         "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
+                        //         fit: BoxFit.cover,
+                        //       ),
                       ),
                       SizedBox(
                         height: 10,
@@ -274,7 +409,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                             ),
                             onPressed: () => {
                                   // getLogo(ImageSource.gallery),
-                                  _pickLogo(6.0),
+                                  showOptions(),
                                 },
                             child: Text('Browse')),
                       ),

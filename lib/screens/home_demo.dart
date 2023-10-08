@@ -1,7 +1,7 @@
 
 import 'package:bpp_shop/screens/demo_seller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+// import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../widgets/CustomClipper.dart';
 
@@ -18,7 +18,11 @@ class _HomeDemoState extends State<HomeDemo> {
 
   bool _isValidPhone(String phone) {
     // Define a regex pattern for phone number validation (U.S. format).
-    final phonePattern = RegExp(r'^(01|\+880)\d{9,13}$');
+    //final phonePattern = RegExp(r'^(01|\+880)\d{9,13}$');
+    final phonePattern = RegExp(r'^(01\d{9}|(?:\+880|880)\d{10})$');
+
+
+
 
     // Use the hasMatch method to check if the phone number matches the pattern.
     return phonePattern.hasMatch(phone);
@@ -74,12 +78,17 @@ class _HomeDemoState extends State<HomeDemo> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'BPPPSHOP',
-                      style: TextStyle(
-                          fontSize: _width * 0.1, fontWeight: FontWeight.bold),
+                    // Text(
+                    //   'BPPPSHOP',
+                    //   style: TextStyle(
+                    //       fontSize: _width * 0.1, fontWeight: FontWeight.bold),
+                    // ),
+                    Image.asset(
+                      'images/bpp shop logo 01.896abfc13589245ecc62.png',
+                      height: _hight*(30/600),
+                     // width: 140,
                     ),
-                    SizedBox(height: _hight / 120),
+                     SizedBox(height: _hight / 120),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -230,9 +239,13 @@ class _HomeDemoState extends State<HomeDemo> {
                                       //   } else {}
                                       // },
                                     ),
-                                    Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(phoneError, style: TextStyle(color: Colors.red))),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: _width *(9/360), vertical: _hight*(3/600),),
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(phoneError, style: TextStyle(color: Colors.red))),
+                                    ),
                                     SizedBox(
                                       height:
                                           MediaQuery.of(context).size.height /
@@ -258,6 +271,11 @@ class _HomeDemoState extends State<HomeDemo> {
                                       // maxLength: (_width*0.8).toInt(),
                                       controller: passwordController,
                                       decoration: InputDecoration(
+                                          errorStyle: TextStyle(
+                                            color: Colors.red,
+                                            fontSize:_width * 0.035,
+                                            fontWeight: FontWeight.w400,// Customize the error text color
+                                          ),
                                           filled: true,
                                           fillColor: Color(0xffe0e0e0),
                                           contentPadding: EdgeInsets.symmetric(
@@ -290,7 +308,9 @@ class _HomeDemoState extends State<HomeDemo> {
                                                       BorderRadius.circular(10),
                                                   borderSide: BorderSide(
                                                     color: Colors.red,
-                                                  ))),
+                                                  ))
+
+                                      ),
                                       keyboardType:
                                           TextInputType.visiblePassword,
 
@@ -299,6 +319,7 @@ class _HomeDemoState extends State<HomeDemo> {
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return "This filed must not be empty";
+
                                         }
                                         if (value.length < 8) {
                                           return " Password must be minimum 8 digit";

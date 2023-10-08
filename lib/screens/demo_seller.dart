@@ -1,4 +1,3 @@
-
 import 'package:bpp_shop/screens/image_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -57,7 +56,9 @@ class _DemoSellerState extends State<DemoSeller> {
   String cityDistrict = '';
   String upoZila = '';
   String areaWord = '';
-  String shopAdress="";
+  String shopAdress = "";
+  String districtName = "";
+  String districtNameError = '';
 
   String firstNameError = '';
   String lastNameError = '';
@@ -67,32 +68,71 @@ class _DemoSellerState extends State<DemoSeller> {
   String cityDistrictError = '';
   String upoZilaError = '';
   String areaWordError = '';
-  String shopAdressError="";
+  String shopAdressError = "";
 
+  String ?_dropdownError;
+  String ?_selectedItem;
+
+  _validateForm() {
+    _validateFirstName();
+    _validateLastName();
+    _validateEmailFields();
+    _validatePhoneFields();
+    _validateShopName();
+    _validateShopAdress();
+    bool _isValid = _formKey.currentState!.validate();
+
+    if (_selectedItem == null) {
+      setState(() => _dropdownError = "Please select an option!");
+      _isValid = false;
+    }
+
+    if (_isValid) {
+      //form is valid
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
+    final _width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final _height = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Scaffold(
-      resizeToAvoidBottomInset:true,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Color(0xfff3f3f3),
       body: Stack(children: [
-
         ClipPath(
           clipper: CustomClipperImage(),
           child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               color: Color(0xffffffff)),
         ),
         SingleChildScrollView(
-          physics:  ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+          physics:
+          ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minWidth: MediaQuery.of(context).size.width,
-              minHeight: MediaQuery.of(context).size.height,
+              minWidth: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              minHeight: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
             ),
             child: IntrinsicHeight(
               child: Column(
@@ -102,16 +142,22 @@ class _DemoSellerState extends State<DemoSeller> {
                   SizedBox(
                     height: _height * (20 / 600),
                   ),
-                  Text(
-                    'BPPSHOP',
-                    style: TextStyle(
-                        fontSize: _height * (16 / 600) + _width * (12 / 360),
-                        fontWeight: FontWeight.bold),
+                  // Text(
+                  //   'BPPSHOP',
+                  //   style: TextStyle(
+                  //       fontSize: _height * (16 / 600) + _width * (12 / 360),
+                  //       fontWeight: FontWeight.bold),
+                  // ),
+                  Image.asset(
+                    'images/bpp shop logo 01.896abfc13589245ecc62.png',
+                    height: _height * (30 / 600),
+                    // width: 140,
                   ),
                   Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(
-                        horizontal: _width*(8/360), vertical: _height *(2/600)),
+                        horizontal: _width * (8 / 360),
+                        vertical: _height * (2 / 600)),
                     padding: EdgeInsets.symmetric(
                         horizontal: _width / 36, vertical: _height / 60),
                     decoration: BoxDecoration(
@@ -158,10 +204,10 @@ class _DemoSellerState extends State<DemoSeller> {
                                 horizontal: _width * (2 / 360),
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
-                                //color: Colors.white,
+                              //color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -176,9 +222,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                       //color: Colors.red,
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: _width / 180,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: _width / 180,
+                                          )),
                                     ),
                                     child: Text("First Name"),
                                   ),
@@ -244,8 +290,8 @@ class _DemoSellerState extends State<DemoSeller> {
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -259,9 +305,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: 2,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: 2,
+                                          )),
                                     ),
                                     child: Text("Last Name"),
                                   ),
@@ -317,8 +363,8 @@ class _DemoSellerState extends State<DemoSeller> {
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -332,9 +378,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: 2,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: 2,
+                                          )),
                                     ),
                                     child: Text("Email address"),
                                   ),
@@ -388,8 +434,8 @@ class _DemoSellerState extends State<DemoSeller> {
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -403,9 +449,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: 2,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: 2,
+                                          )),
                                     ),
                                     child: Text("Phone Number"),
                                   ),
@@ -469,8 +515,8 @@ class _DemoSellerState extends State<DemoSeller> {
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -484,9 +530,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: 2,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: 2,
+                                          )),
                                     ),
                                     child: Text("Shop name "),
                                   ),
@@ -539,8 +585,8 @@ class _DemoSellerState extends State<DemoSeller> {
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -554,9 +600,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: 2,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: 2,
+                                          )),
                                     ),
                                     child: Text("District/City"),
                                   ),
@@ -574,31 +620,55 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: DropdownButtonHideUnderline(
-                                      child: DropdownButton2<String>(
+                                      child: DropdownButtonFormField2<String>(
                                         isExpanded: true,
                                         hint: Text(
                                           '',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color: Theme.of(context).hintColor,
+                                            color: Theme
+                                                .of(context)
+                                                .hintColor,
                                           ),
                                         ),
                                         items: items
                                             .map((String item) =>
-                                                DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(
-                                                    item,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ))
+                                            DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ))
                                             .toList(),
                                         value: selectedValue,
-                                        onChanged: (String? value) {
+                                        // validator: (){
+                                        //   if (validateDropdown(selectedValue) == null) {
+                                        //     // Dropdown is valid, do something
+                                        //     setState(() {
+                                        //       errorText = null;
+                                        //     });
+                                        //   } else {
+                                        //     // Dropdown is invalid, display error message
+                                        //     setState(() {
+                                        //       errorText = 'Please select an option';
+                                        //     });
+                                        //   }
+                                        // },
+                                        // onChanged: (value) {
+                                        //   setState(() {
+                                        //     // districtName = value;
+                                        //     selectedValue = value;
+                                        //     districtNameError = '';
+                                        //   });
+                                        //   // _validateDistrict();
+                                        // },
+                                        onChanged: (value) {
                                           setState(() {
-                                            selectedValue = value;
+                                            _selectedItem = value;
+                                            _dropdownError = null;
                                           });
                                         },
                                       ),
@@ -608,14 +678,30 @@ class _DemoSellerState extends State<DemoSeller> {
                               ],
                             ),
                           ),
+                          // if (districtNameError.isNotEmpty)
+                          //   Align(
+                          //       alignment: Alignment.centerLeft,
+                          //       child: Text(
+                          //         districtNameError,
+                          //         style: TextStyle(
+                          //             color: Colors.red,
+                          //             fontSize: _width / 26,
+                          //             fontWeight: FontWeight.bold),
+                          //       )),
+                          _dropdownError == null
+                              ? SizedBox.shrink()
+                              : Text(
+                            _dropdownError ?? "",
+                            style: TextStyle(color: Colors.red),
+                          ),
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal: _width * (2 / 360),
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -629,9 +715,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: 2,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: 2,
+                                          )),
                                     ),
                                     child: Text("Upozilla/Thana"),
                                   ),
@@ -649,28 +735,32 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: DropdownButtonHideUnderline(
-                                      child: DropdownButton2<String>(
+                                      child: DropdownButtonFormField2<String>(
                                         isExpanded: true,
                                         hint: Text(
                                           '',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color: Theme.of(context).hintColor,
+                                            color: Theme
+                                                .of(context)
+                                                .hintColor,
                                           ),
                                         ),
                                         items: upozila
                                             .map((String item) =>
-                                                DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(
-                                                    item,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ))
+                                            DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ))
                                             .toList(),
                                         value: selectedUpozila,
+                                        // validator: (value){
+                                        //  value==null ?
                                         onChanged: (String? value) {
                                           setState(() {
                                             selectedUpozila = value;
@@ -689,8 +779,8 @@ class _DemoSellerState extends State<DemoSeller> {
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Color(0xFF069DD8), width: 2)),
+                                border: Border.all(
+                                    color: Color(0xFF069DD8), width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -704,9 +794,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                        color: Color(0xFF069DD8),
-                                        width: 2,
-                                      )),
+                                            color: Color(0xFF069DD8),
+                                            width: 2,
+                                          )),
                                     ),
                                     child: Text("Area/Word/Union"),
                                   ),
@@ -730,20 +820,22 @@ class _DemoSellerState extends State<DemoSeller> {
                                           '',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color: Theme.of(context).hintColor,
+                                            color: Theme
+                                                .of(context)
+                                                .hintColor,
                                           ),
                                         ),
                                         items: area
                                             .map((String area) =>
-                                                DropdownMenuItem<String>(
-                                                  value: area,
-                                                  child: Text(
-                                                    area,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ))
+                                            DropdownMenuItem<String>(
+                                              value: area,
+                                              child: Text(
+                                                area,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ))
                                             .toList(),
                                         value: selectedArea,
                                         onChanged: (String? value) {
@@ -841,13 +933,29 @@ class _DemoSellerState extends State<DemoSeller> {
                               _validateEmailFields();
                               _validatePhoneFields();
                               _validateShopName();
+                              _validateShopAdress();
+                              _validateForm();
+                              // Navigator.of(context).push(
+                              //     MaterialPageRoute(
+                              //
+                              //
+                              //         builder: (context) =>
+                              //             ImageRegistration()));
 
-                              if (_formKey.currentState!.validate()) {}
+                              if (_formKey.currentState!.validate()) {
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(
+
+
+                                        builder: (context) =>
+                                            ImageRegistration()));
+                              }
                             },
                             child: Text(
                               "Next",
                               style: TextStyle(
-                                  color: Colors.white, fontWeight: FontWeight.w700),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
                             ),
                             height: _height * 0.045,
                           ),
@@ -864,8 +972,10 @@ class _DemoSellerState extends State<DemoSeller> {
                               ),
                               InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => ImageRegistration()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ImageRegistration()));
                                   },
                                   child: Text(
                                     'Login',
@@ -930,7 +1040,7 @@ class _DemoSellerState extends State<DemoSeller> {
 
   bool _isValidEmail(String email) {
     final RegExp emailRegex =
-        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
     return emailRegex.hasMatch(email);
   }
 
@@ -1002,4 +1112,19 @@ class _DemoSellerState extends State<DemoSeller> {
     }
   }
 
+
+// void _validateDistrict() {
+//   if (selectedValue!.isEmpty) {
+//     setState(() {
+//       districtNameError = 'Please Select your District';
+//     });
+//   }
+// }
+//   String validateDropdown(String value) {
+//     if (value == null || value.isEmpty) {
+//       return 'Please select an option';
+//     }
+//     return null;
+//   }
+// }
 }
