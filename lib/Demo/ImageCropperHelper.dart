@@ -6,78 +6,78 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+// void main() {
+//   runApp(const MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//           highlightColor: const Color(0xFFD0996F),
+//           canvasColor: const Color(0xFFFDF5EC),
+//           textTheme: TextTheme(
+//             headlineSmall: ThemeData.light()
+//                 .textTheme
+//                 .headlineSmall!
+//                 .copyWith(color: const Color(0xFFBC764A)),
+//           ),
+//           iconTheme: IconThemeData(
+//             color: Colors.grey[600],
+//           ),
+//           appBarTheme: const AppBarTheme(
+//             backgroundColor: Color(0xFFBC764A),
+//             centerTitle: false,
+//             foregroundColor: Colors.white,
+//             actionsIconTheme: IconThemeData(color: Colors.white),
+//           ),
+//           elevatedButtonTheme: ElevatedButtonThemeData(
+//             style: ButtonStyle(
+//               backgroundColor: MaterialStateColor.resolveWith(
+//                       (states) => const Color(0xFFBC764A)),
+//             ),
+//           ),
+//           outlinedButtonTheme: OutlinedButtonThemeData(
+//             style: ButtonStyle(
+//               foregroundColor: MaterialStateColor.resolveWith(
+//                     (states) => const Color(0xFFBC764A),
+//               ),
+//               side: MaterialStateBorderSide.resolveWith(
+//                       (states) => const BorderSide(color: Color(0xFFBC764A))),
+//             ),
+//           ),
+//           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+//               .copyWith(background: const Color(0xFFFDF5EC))),
+//       home: const ImageCropperHelper(),
+//     );
+//   }
+// }
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          highlightColor: const Color(0xFFD0996F),
-          canvasColor: const Color(0xFFFDF5EC),
-          textTheme: TextTheme(
-            headlineSmall: ThemeData.light()
-                .textTheme
-                .headlineSmall!
-                .copyWith(color: const Color(0xFFBC764A)),
-          ),
-          iconTheme: IconThemeData(
-            color: Colors.grey[600],
-          ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFFBC764A),
-            centerTitle: false,
-            foregroundColor: Colors.white,
-            actionsIconTheme: IconThemeData(color: Colors.white),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => const Color(0xFFBC764A)),
-            ),
-          ),
-          outlinedButtonTheme: OutlinedButtonThemeData(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateColor.resolveWith(
-                    (states) => const Color(0xFFBC764A),
-              ),
-              side: MaterialStateBorderSide.resolveWith(
-                      (states) => const BorderSide(color: Color(0xFFBC764A))),
-            ),
-          ),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-              .copyWith(background: const Color(0xFFFDF5EC))),
-      home: const HomePage(title: 'Image Cropper Demo'),
-    );
-  }
-}
+class ImageCropperHelper extends StatefulWidget {
+  //final String title;
 
-class HomePage extends StatefulWidget {
-  final String title;
-
-  const HomePage({
+  const ImageCropperHelper({
     Key? key,
-    required this.title,
+   //required this.title,
   }) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _ImageCropperHelperState createState() => _ImageCropperHelperState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ImageCropperHelperState extends State<ImageCropperHelper> {
   XFile? _pickedFile;
   CroppedFile? _croppedFile;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: !kIsWeb ? AppBar(title: Text(widget.title)) : null,
+      appBar: !kIsWeb ? AppBar(title: Text("Tittle")) : null,
       body: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(kIsWeb ? 24.0 : 16.0),
               child: Text(
-                widget.title,
+                "Tittle",
                 style: Theme.of(context)
                     .textTheme
                     .displayMedium!
