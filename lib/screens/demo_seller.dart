@@ -33,21 +33,26 @@ class _DemoSellerState extends State<DemoSeller> {
     'nakhalpara',
   ];
 
-  String? selectedValue;
-  String? selectedUpozila;
-  String? selectedArea;
-
   //Validation:
   var _formKey = GlobalKey<FormState>();
-  bool? isValidate = false;
+  bool? _isValidate = false;
   String? invalidFirstNName;
 
   //final namePattern = RegExp(r'^[a-zA-Z\s]*$');
-  String? number;
-  TextEditingController numberController = TextEditingController();
+  // String? number;
+  // TextEditingController numberController = TextEditingController();
 
   //Live:
-  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _fnController = TextEditingController();
+  TextEditingController _lnController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _snController = TextEditingController();
+  TextEditingController _dcController = TextEditingController();
+  TextEditingController _utController = TextEditingController();
+  TextEditingController _awuController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+
   String firstName = '';
   String lastName = '';
   String email = '';
@@ -65,43 +70,37 @@ class _DemoSellerState extends State<DemoSeller> {
   String emailError = '';
   String phoneError = '';
   String shopNameError = '';
-  String cityDistrictError = '';
-  String upoZilaError = '';
-  String areaWordError = '';
   String shopAdressError = "";
 
-  String ?_dropdownError;
-  String ?_selectedItem;
+  String? _selectedItem;
+  String? _selectedUpozila;
+  String? _selectedArea;
+  String _upoZilaError='';
+  String _areaWordError='';
+  String _dropdownError = '';
 
-  _validateForm() {
-    _validateFirstName();
-    _validateLastName();
-    _validateEmailFields();
-    _validatePhoneFields();
-    _validateShopName();
-    _validateShopAdress();
-    bool _isValid = _formKey.currentState!.validate();
-
+  _validateDistrict() {
     if (_selectedItem == null) {
       setState(() => _dropdownError = "Please select an option!");
-      _isValid = false;
     }
+  }
 
-    if (_isValid) {
-      //form is valid
+  _validateUpozila() {
+    if (_selectedUpozila == null) {
+      setState(() => _upoZilaError = "Please select an option!");
+    }
+  }
+
+  _validateArea() {
+    if (_selectedArea == null) {
+      setState(() => _areaWordError = "Please select an option!");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final _height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -110,29 +109,17 @@ class _DemoSellerState extends State<DemoSeller> {
         ClipPath(
           clipper: CustomClipperImage(),
           child: Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               color: Color(0xffffffff)),
         ),
         SingleChildScrollView(
           physics:
-          ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+              ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minWidth: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              minHeight: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
+              minWidth: MediaQuery.of(context).size.width,
+              minHeight: MediaQuery.of(context).size.height,
             ),
             child: IntrinsicHeight(
               child: Column(
@@ -204,10 +191,13 @@ class _DemoSellerState extends State<DemoSeller> {
                                 horizontal: _width * (2 / 360),
                                 vertical: _height * (2 / 600)),
                             decoration: BoxDecoration(
-                              //color: Colors.white,
+                                //color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                    color: Color(0xFF069DD8), width: 2)),
+                                    color: firstNameError.isEmpty
+                                        ? Color(0xFF069DD8)
+                                        : Colors.red,
+                                    width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -222,9 +212,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                       //color: Colors.red,
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: _width / 180,
-                                          )),
+                                        color: Color(0xFF069DD8),
+                                        width: _width / 180,
+                                      )),
                                     ),
                                     child: Text("First Name"),
                                   ),
@@ -250,6 +240,7 @@ class _DemoSellerState extends State<DemoSeller> {
                                     // ),
 
                                     child: TextFormField(
+                                      controller: _fnController,
                                       textInputAction: TextInputAction.next,
                                       //focusNode: _firstNameFocus,
                                       decoration: InputDecoration(
@@ -257,13 +248,52 @@ class _DemoSellerState extends State<DemoSeller> {
                                           borderSide: BorderSide.none,
                                         ),
                                       ),
+                                      // decoration: InputDecoration(
+                                      //   contentPadding: EdgeInsets.symmetric(
+                                      //       horizontal: _width * 0.02,
+                                      //       vertical: _height * 0.01),
+                                      //   filled: true,
+                                      //   fillColor: Color(0xffe0e0e0),
+                                      //   hintText: " Enter Mobile Number ",
+                                      //   enabledBorder: OutlineInputBorder(
+                                      //       borderRadius:
+                                      //       BorderRadius.circular(10),
+                                      //       borderSide: BorderSide(
+                                      //         color: Color(0xff059dd8),
+                                      //       )),
+                                      //   focusedBorder: OutlineInputBorder(
+                                      //       borderRadius:
+                                      //       BorderRadius.circular(10),
+                                      //       borderSide: BorderSide(
+                                      //         color: Colors.blue,
+                                      //       )),
+                                      //   errorBorder: OutlineInputBorder(
+                                      //     borderRadius: BorderRadius.circular(10),
+                                      //     borderSide: BorderSide(
+                                      //       color: Colors.red,
+                                      //     ),
+                                      //   ),
+                                      //   focusedErrorBorder: OutlineInputBorder(
+                                      //       borderRadius:
+                                      //       BorderRadius.circular(10),
+                                      //       borderSide: BorderSide(
+                                      //         color: Colors.red,
+                                      //       )),
+                                      //   errorStyle: TextStyle(
+                                      //     color: Colors.red,
+                                      //     fontSize: _width * 0.035,
+                                      //     fontWeight: FontWeight
+                                      //         .w400, // Customize the error text color
+                                      //   ),
+                                      // ),
                                       onChanged: (value) {
                                         setState(() {
                                           firstName = value;
                                           firstNameError = '';
+                                          // _isValidate = true;
                                         });
-
                                         _validateFirstName();
+                                        // _isValidate = true;
                                       },
                                     ),
                                   ),
@@ -277,7 +307,7 @@ class _DemoSellerState extends State<DemoSeller> {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  firstNameError!,
+                                  firstNameError,
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontSize: _width / 26,
@@ -291,7 +321,10 @@ class _DemoSellerState extends State<DemoSeller> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                    color: Color(0xFF069DD8), width: 2)),
+                                    color: lastNameError.isEmpty
+                                        ? Color(0xFF069DD8)
+                                        : Colors.red,
+                                    width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -305,9 +338,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: 2,
-                                          )),
+                                        color: Color(0xFF069DD8),
+                                        width: 2,
+                                      )),
                                     ),
                                     child: Text("Last Name"),
                                   ),
@@ -325,12 +358,58 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: TextFormField(
+                                      controller: _lnController,
                                       //focusNode: _lastNameFocus,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                         ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                            color: Colors.red,
+                                          ),
+                                        ),
                                       ),
+                                      // decoration: InputDecoration(
+                                      //   contentPadding: EdgeInsets.symmetric(
+                                      //       horizontal: _width * 0.02,
+                                      //       vertical: _height * 0.01),
+                                      //   filled: true,
+                                      //   fillColor: Color(0xffe0e0e0),
+                                      //   hintText: " Enter Mobile Number ",
+                                      //   enabledBorder: OutlineInputBorder(
+                                      //       borderRadius:
+                                      //       BorderRadius.circular(10),
+                                      //       borderSide: BorderSide(
+                                      //         color: Color(0xff059dd8),
+                                      //       )),
+                                      //   focusedBorder: OutlineInputBorder(
+                                      //       borderRadius:
+                                      //       BorderRadius.circular(10),
+                                      //       borderSide: BorderSide(
+                                      //         color: Colors.blue,
+                                      //       )),
+                                      //   errorBorder: OutlineInputBorder(
+                                      //     borderRadius: BorderRadius.circular(10),
+                                      //     borderSide: BorderSide(
+                                      //       color: Colors.red,
+                                      //     ),
+                                      //   ),
+                                      //   focusedErrorBorder: OutlineInputBorder(
+                                      //       borderRadius:
+                                      //       BorderRadius.circular(10),
+                                      //       borderSide: BorderSide(
+                                      //         color: Colors.red,
+                                      //       )),
+                                      //   errorStyle: TextStyle(
+                                      //     color: Colors.red,
+                                      //     fontSize: _width * 0.035,
+                                      //     fontWeight: FontWeight
+                                      //         .w400, // Customize the error text color
+                                      //   ),
+                                      // ),
                                       onChanged: (value) {
                                         setState(() {
                                           lastName = value;
@@ -350,7 +429,7 @@ class _DemoSellerState extends State<DemoSeller> {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  lastNameError!,
+                                  lastNameError,
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontSize: _width / 26,
@@ -364,7 +443,10 @@ class _DemoSellerState extends State<DemoSeller> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                    color: Color(0xFF069DD8), width: 2)),
+                                    color: emailError.isEmpty
+                                        ? Color(0xFF069DD8)
+                                        : Colors.red,
+                                    width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -378,9 +460,11 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: 2,
-                                          )),
+                                        color: emailError.isEmpty
+                                            ? Color(0xFF069DD8)
+                                            : Colors.red,
+                                        width: 2,
+                                      )),
                                     ),
                                     child: Text("Email address"),
                                   ),
@@ -398,6 +482,7 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: TextFormField(
+                                      controller: _emailController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -421,7 +506,7 @@ class _DemoSellerState extends State<DemoSeller> {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  emailError!,
+                                  emailError,
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontSize: _width / 26,
@@ -435,7 +520,10 @@ class _DemoSellerState extends State<DemoSeller> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                    color: Color(0xFF069DD8), width: 2)),
+                                    color: phoneError.isEmpty
+                                        ? Color(0xFF069DD8)
+                                        : Colors.red,
+                                    width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -449,9 +537,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: 2,
-                                          )),
+                                        color: Color(0xFF069DD8),
+                                        width: 2,
+                                      )),
                                     ),
                                     child: Text("Phone Number"),
                                   ),
@@ -469,7 +557,7 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: TextFormField(
-                                      controller: numberController,
+                                      controller: _phoneController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -516,7 +604,10 @@ class _DemoSellerState extends State<DemoSeller> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                    color: Color(0xFF069DD8), width: 2)),
+                                    color: shopNameError.isEmpty
+                                        ? Color(0xFF069DD8)
+                                        : Colors.red,
+                                    width: 2)),
                             height: _height * (26 / 600),
                             child: Row(
                               children: [
@@ -530,9 +621,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: 2,
-                                          )),
+                                        color: Color(0xFF069DD8),
+                                        width: 2,
+                                      )),
                                     ),
                                     child: Text("Shop name "),
                                   ),
@@ -550,6 +641,7 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: TextFormField(
+                                      controller: _snController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -600,9 +692,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: 2,
-                                          )),
+                                        color: Color(0xFF069DD8),
+                                        width: 2,
+                                      )),
                                     ),
                                     child: Text("District/City"),
                                   ),
@@ -620,56 +712,34 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: DropdownButtonHideUnderline(
-                                      child: DropdownButtonFormField2<String>(
+                                      child: DropdownButton2<String>(
                                         isExpanded: true,
                                         hint: Text(
                                           '',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color: Theme
-                                                .of(context)
-                                                .hintColor,
+                                            color: Theme.of(context).hintColor,
                                           ),
                                         ),
                                         items: items
                                             .map((String item) =>
-                                            DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ))
+                                                DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ))
                                             .toList(),
-                                        value: selectedValue,
-                                        // validator: (){
-                                        //   if (validateDropdown(selectedValue) == null) {
-                                        //     // Dropdown is valid, do something
-                                        //     setState(() {
-                                        //       errorText = null;
-                                        //     });
-                                        //   } else {
-                                        //     // Dropdown is invalid, display error message
-                                        //     setState(() {
-                                        //       errorText = 'Please select an option';
-                                        //     });
-                                        //   }
-                                        // },
-                                        // onChanged: (value) {
-                                        //   setState(() {
-                                        //     // districtName = value;
-                                        //     selectedValue = value;
-                                        //     districtNameError = '';
-                                        //   });
-                                        //   // _validateDistrict();
-                                        // },
+                                        value: _selectedItem,
                                         onChanged: (value) {
                                           setState(() {
                                             _selectedItem = value;
-                                            _dropdownError = null;
+                                            _dropdownError = '';
                                           });
+                                          _validateDistrict();
                                         },
                                       ),
                                     ),
@@ -678,22 +748,17 @@ class _DemoSellerState extends State<DemoSeller> {
                               ],
                             ),
                           ),
-                          // if (districtNameError.isNotEmpty)
-                          //   Align(
-                          //       alignment: Alignment.centerLeft,
-                          //       child: Text(
-                          //         districtNameError,
-                          //         style: TextStyle(
-                          //             color: Colors.red,
-                          //             fontSize: _width / 26,
-                          //             fontWeight: FontWeight.bold),
-                          //       )),
-                          _dropdownError == null
-                              ? SizedBox.shrink()
-                              : Text(
-                            _dropdownError ?? "",
-                            style: TextStyle(color: Colors.red),
-                          ),
+                          if (_dropdownError.isNotEmpty)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                _dropdownError,
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: _width / 26,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal: _width * (2 / 360),
@@ -715,9 +780,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: 2,
-                                          )),
+                                        color: Color(0xFF069DD8),
+                                        width: 2,
+                                      )),
                                     ),
                                     child: Text("Upozilla/Thana"),
                                   ),
@@ -735,36 +800,36 @@ class _DemoSellerState extends State<DemoSeller> {
                                           bottomRight: Radius.circular(10)),
                                     ),
                                     child: DropdownButtonHideUnderline(
-                                      child: DropdownButtonFormField2<String>(
+                                      child: DropdownButton2<String>(
                                         isExpanded: true,
                                         hint: Text(
                                           '',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color: Theme
-                                                .of(context)
-                                                .hintColor,
+                                            color: Theme.of(context).hintColor,
                                           ),
                                         ),
                                         items: upozila
                                             .map((String item) =>
-                                            DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ))
+                                                DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ))
                                             .toList(),
-                                        value: selectedUpozila,
+                                        value: _selectedUpozila,
                                         // validator: (value){
                                         //  value==null ?
                                         onChanged: (String? value) {
                                           setState(() {
-                                            selectedUpozila = value;
+                                            _selectedUpozila = value;
+                                            _upoZilaError = '';
                                           });
+                                          _validateUpozila();
                                         },
                                       ),
                                     ),
@@ -773,6 +838,17 @@ class _DemoSellerState extends State<DemoSeller> {
                               ],
                             ),
                           ),
+                          if (_upoZilaError.isNotEmpty)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                _upoZilaError,
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: _width / 26,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal: _width * (2 / 360),
@@ -794,9 +870,9 @@ class _DemoSellerState extends State<DemoSeller> {
                                     decoration: BoxDecoration(
                                       border: Border(
                                           right: BorderSide(
-                                            color: Color(0xFF069DD8),
-                                            width: 2,
-                                          )),
+                                        color: Color(0xFF069DD8),
+                                        width: 2,
+                                      )),
                                     ),
                                     child: Text("Area/Word/Union"),
                                   ),
@@ -820,28 +896,28 @@ class _DemoSellerState extends State<DemoSeller> {
                                           '',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color: Theme
-                                                .of(context)
-                                                .hintColor,
+                                            color: Theme.of(context).hintColor,
                                           ),
                                         ),
                                         items: area
                                             .map((String area) =>
-                                            DropdownMenuItem<String>(
-                                              value: area,
-                                              child: Text(
-                                                area,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ))
+                                                DropdownMenuItem<String>(
+                                                  value: area,
+                                                  child: Text(
+                                                    area,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ))
                                             .toList(),
-                                        value: selectedArea,
+                                        value: _selectedArea,
                                         onChanged: (String? value) {
                                           setState(() {
-                                            selectedArea = value;
+                                            _selectedArea = value;
+                                            _areaWordError ='';
                                           });
+                                          _validateArea();
                                         },
                                       ),
                                     ),
@@ -850,6 +926,17 @@ class _DemoSellerState extends State<DemoSeller> {
                               ],
                             ),
                           ),
+                          if (_areaWordError.isNotEmpty)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                _areaWordError,
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: _width / 26,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
 
                           //**********Shop Adress ***********
                           Container(
@@ -863,10 +950,13 @@ class _DemoSellerState extends State<DemoSeller> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: Color(0xFF069DD8),
+                                  color: shopAdressError.isEmpty
+                                      ? Color(0xFF069DD8)
+                                      : Colors.red,
                                 )),
 
                             child: TextFormField(
+                              controller: _addressController,
                               maxLines: 3,
                               decoration: InputDecoration(
                                   hintMaxLines: 3,
@@ -875,11 +965,11 @@ class _DemoSellerState extends State<DemoSeller> {
                                       vertical: _height * (5 / 600)),
                                   hintText: "Shop address",
                                   //labelText: 'Password',
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      )),
+                                  // enabledBorder: OutlineInputBorder(
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //     borderSide: BorderSide(
+                                  //       color: Colors.blue,
+                                  //     )),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(
@@ -929,27 +1019,46 @@ class _DemoSellerState extends State<DemoSeller> {
                                 borderRadius: BorderRadius.circular(10)),
                             onPressed: () {
                               _validateFirstName();
-                              _validateLastName();
-                              _validateEmailFields();
-                              _validatePhoneFields();
-                              _validateShopName();
-                              _validateShopAdress();
-                              _validateForm();
-                              // Navigator.of(context).push(
-                              //     MaterialPageRoute(
-                              //
-                              //
-                              //         builder: (context) =>
-                              //             ImageRegistration()));
-
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(
-
-
-                                        builder: (context) =>
-                                            ImageRegistration()));
+                               _validateLastName();
+                               _validateEmailFields();
+                               _validatePhoneFields();
+                               _validateShopName();
+                               _validateShopAdress();
+                              _validateDistrict();
+                              _validateArea();
+                              _validateUpozila();
+                              if (firstNameError.isEmpty &&
+                                      lastNameError.isEmpty &&
+                                      emailError.isEmpty &&
+                                      phoneError.isEmpty &&
+                                      shopNameError.isEmpty &&
+                                      shopAdressError.isEmpty &&
+                                      _upoZilaError!.isEmpty &&
+                                      _dropdownError!.isEmpty
+                                  // && _areaWordError!.isEmpty
+                                  ) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ImageRegistration()));
                               }
+
+                              // if (_fnController.text.isNotEmpty &&
+                              //     _lnController.text.isNotEmpty &&
+                              //     _emailController.text.isNotEmpty &&
+                              //     _phoneController.text.isNotEmpty &&
+                              //     _snController.text.isNotEmpty &&
+                              //     _addressController.text.isNotEmpty &&
+                              //     _selectedItem!.isNotEmpty &&
+                              //     _selectedUpozila!.isNotEmpty &&
+                              //     _selectedArea!.isNotEmpty ) {
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => ImageRegistration()));
+                              //}
+
+                              // if (_formKey.currentState!.validate()) {
+                              //   Navigator.of(context).push(MaterialPageRoute(
+                              //       builder: (context) => ImageRegistration())
+                              //   );
+                              // }
                             },
                             child: Text(
                               "Next",
@@ -1040,7 +1149,7 @@ class _DemoSellerState extends State<DemoSeller> {
 
   bool _isValidEmail(String email) {
     final RegExp emailRegex =
-    RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
     return emailRegex.hasMatch(email);
   }
 
@@ -1105,13 +1214,12 @@ class _DemoSellerState extends State<DemoSeller> {
       setState(() {
         shopAdressError = 'Please enter your shop adress';
       });
-    } else if (!_isValidFirstName(firstName)) {
+    } else if (!_isValidShopAdress(shopAdress)) {
       setState(() {
         shopAdressError = '';
       });
     }
   }
-
 
 // void _validateDistrict() {
 //   if (selectedValue!.isEmpty) {

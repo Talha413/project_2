@@ -1,3 +1,5 @@
+import 'package:bpp_shop/Demo/image_2.dart';
+import 'package:bpp_shop/Demo/image_demo.dart';
 import 'package:bpp_shop/screens/home_demo.dart';
 import 'package:bpp_shop/screens/image_registration.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: HomeDemo());
+        home:HomeDemo());
   }
 }
 
