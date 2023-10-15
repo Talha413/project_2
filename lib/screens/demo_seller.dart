@@ -12,6 +12,19 @@ class DemoSeller extends StatefulWidget {
 }
 
 class _DemoSellerState extends State<DemoSeller> {
+  _focusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  final FocusNode _fnFocus = FocusNode();
+  final FocusNode _lnFocus = FocusNode();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _phoneFocus = FocusNode();
+  final FocusNode _snFocus = FocusNode();
+  final FocusNode _saFocus = FocusNode();
+
   final List<String> items = [
     'Dhaka',
     'Shylet',
@@ -75,8 +88,8 @@ class _DemoSellerState extends State<DemoSeller> {
   String? _selectedItem;
   String? _selectedUpozila;
   String? _selectedArea;
-  String _upoZilaError='';
-  String _areaWordError='';
+  String _upoZilaError = '';
+  String _areaWordError = '';
   String _dropdownError = '';
 
   _validateDistrict() {
@@ -242,8 +255,15 @@ class _DemoSellerState extends State<DemoSeller> {
                                     child: TextFormField(
                                       controller: _fnController,
                                       textInputAction: TextInputAction.next,
-                                      //focusNode: _firstNameFocus,
+                                      keyboardType: TextInputType.name,
+                                      focusNode: _fnFocus,
+                                      onEditingComplete: () {
+                                        _focusChange(
+                                            context, _fnFocus, _lnFocus);
+                                        },
                                       decoration: InputDecoration(
+                                        // filled: true,
+                                        // fillColor: Color(0xffe0e0e0),
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                         ),
@@ -359,7 +379,13 @@ class _DemoSellerState extends State<DemoSeller> {
                                     ),
                                     child: TextFormField(
                                       controller: _lnController,
-                                      //focusNode: _lastNameFocus,
+                                      focusNode: _lnFocus,
+                                      textInputAction: TextInputAction.next,
+                                      keyboardType: TextInputType.name,
+                                      onEditingComplete: () {
+                                        _focusChange(
+                                            context, _lnFocus, _emailFocus);
+                                      },
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -483,6 +509,13 @@ class _DemoSellerState extends State<DemoSeller> {
                                     ),
                                     child: TextFormField(
                                       controller: _emailController,
+                                      focusNode: _emailFocus,
+                                      textInputAction: TextInputAction.next,
+                                      keyboardType: TextInputType.name,
+                                      onEditingComplete: () {
+                                        _focusChange(
+                                            context, _emailFocus, _phoneFocus);
+                                      },
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -558,12 +591,18 @@ class _DemoSellerState extends State<DemoSeller> {
                                     ),
                                     child: TextFormField(
                                       controller: _phoneController,
+                                      keyboardType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
+                                      focusNode: _phoneFocus,
+                                      onEditingComplete: () {
+                                        _focusChange(
+                                            context, _phoneFocus, _snFocus);
+                                      },
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
                                         ),
                                       ),
-                                      keyboardType: TextInputType.number,
                                       onChanged: (value) {
                                         setState(() {
                                           phone = value;
@@ -642,6 +681,13 @@ class _DemoSellerState extends State<DemoSeller> {
                                     ),
                                     child: TextFormField(
                                       controller: _snController,
+                                      focusNode: _snFocus,
+                                      textInputAction: TextInputAction.next,
+                                      keyboardType: TextInputType.name,
+                                      onEditingComplete: () {
+                                        _focusChange(
+                                            context, _snFocus, _saFocus);
+                                      },
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide.none,
@@ -915,7 +961,7 @@ class _DemoSellerState extends State<DemoSeller> {
                                         onChanged: (String? value) {
                                           setState(() {
                                             _selectedArea = value;
-                                            _areaWordError ='';
+                                            _areaWordError = '';
                                           });
                                           _validateArea();
                                         },
@@ -950,42 +996,30 @@ class _DemoSellerState extends State<DemoSeller> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: shopAdressError.isEmpty
-                                      ? Color(0xFF069DD8)
-                                      : Colors.red,
-                                )),
+                                    color: shopAdressError.isEmpty
+                                        ? Color(0xFF069DD8)
+                                        : Colors.red,
+                                    width: 2)),
 
                             child: TextFormField(
                               controller: _addressController,
+                              focusNode: _saFocus,
+                              textInputAction: TextInputAction.done,
+                              keyboardType: TextInputType.name,
+                              onEditingComplete: () {
+                                _saFocus.unfocus();
+                              },
                               maxLines: 3,
                               decoration: InputDecoration(
-                                  hintMaxLines: 3,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: _width * (10 / 360),
-                                      vertical: _height * (5 / 600)),
-                                  hintText: "Shop address",
-                                  //labelText: 'Password',
-                                  // enabledBorder: OutlineInputBorder(
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //     borderSide: BorderSide(
-                                  //       color: Colors.blue,
-                                  //     )),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                      )),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
-                                        color: Colors.red,
-                                      ))),
+                                hintMaxLines: 3,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: _width * (10 / 360),
+                                    vertical: _height * (5 / 600)),
+                                hintText: "Shop address",
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
                               onChanged: (value) {
                                 setState(() {
                                   shopAdress = value;
@@ -1019,11 +1053,11 @@ class _DemoSellerState extends State<DemoSeller> {
                                 borderRadius: BorderRadius.circular(10)),
                             onPressed: () {
                               _validateFirstName();
-                               _validateLastName();
-                               _validateEmailFields();
-                               _validatePhoneFields();
-                               _validateShopName();
-                               _validateShopAdress();
+                              _validateLastName();
+                              _validateEmailFields();
+                              _validatePhoneFields();
+                              _validateShopName();
+                              _validateShopAdress();
                               _validateDistrict();
                               _validateArea();
                               _validateUpozila();
@@ -1112,7 +1146,7 @@ class _DemoSellerState extends State<DemoSeller> {
   //######## Method Section ########
 
   bool _isValidFirstName(String firstName) {
-    final namePattern = RegExp(r'^[A-Za-z\s]{1,50}$');
+    final namePattern = RegExp(r'^[A-Za-z\s]{3,50}$');
 
     return namePattern.hasMatch(firstName);
   }
@@ -1167,7 +1201,7 @@ class _DemoSellerState extends State<DemoSeller> {
 
   bool _isValidPhone(String phone) {
     // Define a regex pattern for phone number validation (U.S. format).
-    final phonePattern = RegExp(r'^\d{11}$');
+    final phonePattern = RegExp(r'^(01\d{9}|(?:\+880|880)\d{10})$');
 
     // Use the hasMatch method to check if the phone number matches the pattern.
     return phonePattern.hasMatch(phone);

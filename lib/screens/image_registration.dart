@@ -30,11 +30,13 @@ class _ImageRegistrationState extends State<ImageRegistration> {
 
   // File? _imagePath;
   // File? _logoPath;
-  var _formkey=GlobalKey<FormState>();
-  String ?password;
-  String  passwordError="";
-  TextEditingController passwordController =TextEditingController();
-  TextEditingController retypePasswordController =TextEditingController();
+  var _formkey = GlobalKey<FormState>();
+  String password = "";
+  String passwordError = "";
+  String retypePassword = '';
+  String retypePasswordError = "";
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController retypePasswordController = TextEditingController();
 
   final picker = ImagePicker();
 
@@ -54,49 +56,49 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                   children: [
                     Expanded(
                         child: InkWell(
-                          child: Column(
-                            children: const [
-                              Icon(
-                                Icons.image,
-                                size: 60.0,
-                              ),
-                              SizedBox(height: 12.0),
-                              Text(
-                                "Gallery",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              )
-                            ],
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.image,
+                            size: 60.0,
                           ),
-                          onTap: () {
-                            _imgFromGallery();
-                            Navigator.pop(context);
-                          },
-                        )),
+                          SizedBox(height: 12.0),
+                          Text(
+                            "Gallery",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          )
+                        ],
+                      ),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.pop(context);
+                      },
+                    )),
                     Expanded(
                         child: InkWell(
-                          child: SizedBox(
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Icons.camera_alt,
-                                  size: 60.0,
-                                ),
-                                SizedBox(height: 12.0),
-                                Text(
-                                  "Camera",
-                                  textAlign: TextAlign.center,
-                                  style:
-                                  TextStyle(fontSize: 16, color: Colors.black),
-                                )
-                              ],
+                      child: SizedBox(
+                        child: Column(
+                          children: const [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 60.0,
                             ),
-                          ),
-                          onTap: () {
-                            _imgFromCamera();
-                            Navigator.pop(context);
-                          },
-                        ))
+                            SizedBox(height: 12.0),
+                            Text(
+                              "Camera",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
+                            )
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        _imgFromCamera();
+                        Navigator.pop(context);
+                      },
+                    ))
                   ],
                 )),
           );
@@ -116,6 +118,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
         .pickImage(source: ImageSource.camera, imageQuality: 50)
         .then((value) {
       if (value != null) {
+        _selectedFileName = value.name;
         _cropImage(File(value.path));
       }
     });
@@ -179,50 +182,50 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                   children: [
                     Expanded(
                         child: InkWell(
-                          child: Column(
-                            children: const [
-                              Icon(
-                                Icons.image,
-                                size: 60.0,
-                              ),
-                              SizedBox(height: 12.0),
-                              Text(
-                                "Gallery",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              )
-                            ],
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.image,
+                            size: 60.0,
                           ),
-                          onTap: () {
-                            //_imgFromGallery();
-                            _pickLogo(1.0);
-                            Navigator.pop(context);
-                          },
-                        )),
+                          SizedBox(height: 12.0),
+                          Text(
+                            "Gallery",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          )
+                        ],
+                      ),
+                      onTap: () {
+                        //_imgFromGallery();
+                        _pickLogo(1.0);
+                        Navigator.pop(context);
+                      },
+                    )),
                     Expanded(
                         child: InkWell(
-                          child: SizedBox(
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Icons.camera_alt,
-                                  size: 60.0,
-                                ),
-                                SizedBox(height: 12.0),
-                                Text(
-                                  "Camera",
-                                  textAlign: TextAlign.center,
-                                  style:
-                                  TextStyle(fontSize: 16, color: Colors.black),
-                                )
-                              ],
+                      child: SizedBox(
+                        child: Column(
+                          children: const [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 60.0,
                             ),
-                          ),
-                          onTap: () {
-                            _logoFromCamera();
-                            Navigator.pop(context);
-                          },
-                        ))
+                            SizedBox(height: 12.0),
+                            Text(
+                              "Camera",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
+                            )
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        _logoFromCamera();
+                        Navigator.pop(context);
+                      },
+                    ))
                   ],
                 )),
           );
@@ -383,7 +386,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                         horizontal: _width * (8 / 360),
                         vertical: _height * (2 / 600)),
                     padding: EdgeInsets.symmetric(
-                        horizontal: _width / 36, vertical: _height / 60),
+                        horizontal: _width*(6/360), vertical: _height*(4/600)),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
@@ -415,48 +418,49 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                             children: [
                               Container(
                                 padding: EdgeInsets.all(5),
-                                height: _height*(90/600),
-                                width: _width*(120/360),
+                                height: _height * (90 / 600),
+                                width: _width * (120 / 360),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(color: Colors.blue),
                                 ),
                                 child: imageFile != null
                                     ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.file(
-                                    imageFile!,
-                                    //height: 400,
-                                    //width: 400,
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.file(
+                                          imageFile!,
+                                          //height: 400,
+                                          //width: 400,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
                                     : CachedNetworkImage(
-                                  //fit: BoxFit.cover,
-                                  imageUrl:
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU",
-                                  progressIndicatorBuilder: (context, url,
-                                      downloadProgress) =>
-                                      CircularProgressIndicator(
-                                          value: downloadProgress.progress),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
-                                ),
+                                        //fit: BoxFit.cover,
+                                        imageUrl:
+                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU",
+                                        progressIndicatorBuilder: (context, url,
+                                                downloadProgress) =>
+                                            CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
 
                                 // Image.network(
                                 //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBr35nsGltX_wIDUpo4TCQCXGHsnU1P9qUQ&usqp=CAU"),
                               ),
                               Container(
-                                height:_height*(90/600),
+                                height: _height * (90 / 600),
                                 child: Column(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
                                       alignment: Alignment.center,
                                       padding: EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 4),
-                                      width: _width*(190/360),
+                                          vertical: _height*(8/600), horizontal:  _width*(4/360)),
+                                      width: _width * (190 / 360),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         border: Border.all(color: Colors.blue),
@@ -471,13 +475,13 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                           backgroundColor: Colors.grey,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(10),
+                                                BorderRadius.circular(10),
                                           ),
                                         ),
                                         onPressed: () => {
-                                          //showOptions(),
-                                          showImagePicker(context),
-                                        },
+                                              //showOptions(),
+                                              showImagePicker(context),
+                                            },
                                         child: Text('Browse'))
                                   ],
                                 ),
@@ -498,24 +502,24 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                             width: double.infinity,
                             child: logoFile != null
                                 ? ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.file(
-                                logoFile!,
-                                //height: 400,
-                                //width: 400,
-                                fit: BoxFit.cover,
-                              ),
-                            )
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      logoFile!,
+                                      //height: 400,
+                                      //width: 400,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
                                 : CachedNetworkImage(
-                              imageUrl:
-                              "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) =>
-                                  CircularProgressIndicator(
-                                      value: downloadProgress.progress),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            ),
+                                    imageUrl:
+                                        "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  ),
 
                             // Image.network(
                             //         "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
@@ -527,8 +531,8 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                           ),
                           Container(
                             alignment: Alignment.center,
-                            padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 4),
                             width: 400,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
@@ -552,10 +556,10 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                   ),
                                 ),
                                 onPressed: () => {
-                                  // getLogo(ImageSource.gallery),
-                                  // showOptions(),
-                                  showLogoPicker(context),
-                                },
+                                      // getLogo(ImageSource.gallery),
+                                      // showOptions(),
+                                      showLogoPicker(context),
+                                    },
                                 child: Text('Browse')),
                           ),
                           Container(
@@ -565,7 +569,9 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                             width: 380,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.blue),
+                              border: Border.all(color: passwordError.isEmpty
+                                  ? Color(0xFF069DD8)
+                                  : Colors.red,),
                             ),
                             child: Row(
                               children: [
@@ -576,11 +582,12 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                     height: 40,
                                     //width: 80,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10),
-                                      ),
-                                      border: Border.all(color: Colors.blue),
+                                      //color: Colors.red,
+                                      border: Border(
+                                          right: BorderSide(
+                                            color: Color(0xFF069DD8),
+                                            width: _width / 180,
+                                          )),
                                     ),
                                     child: Text("Password"),
                                   ),
@@ -593,13 +600,13 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                     //width: 300,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(10),
-                                        bottomRight: Radius.circular(10),
-                                      ),
-                                      border: Border.all(color: Colors.blue),
+                                          topRight: Radius.circular(10),
+                                          bottomRight: Radius.circular(10)),
                                     ),
 
                                     child: TextFormField(
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
                                       controller: passwordController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -608,7 +615,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                       ),
                                       onChanged: (value) {
                                         setState(() {
-                                          password= value;
+                                          password = value;
                                           passwordError = '';
                                         });
                                         _validatePasswordFields();
@@ -623,7 +630,7 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  passwordError!,
+                                  passwordError,
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontSize: _width / 26,
@@ -636,7 +643,9 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                             width: 380,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.blue),
+                              border: Border.all(color: retypePasswordError.isEmpty
+                                  ? Color(0xFF069DD8)
+                                  : Colors.red,),
                             ),
                             child: Row(
                               children: [
@@ -647,11 +656,12 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                     height: 40,
                                     //width: 80,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10),
-                                      ),
-                                      border: Border.all(color: Colors.blue),
+                                      //color: Colors.red,
+                                      border: Border(
+                                          right: BorderSide(
+                                            color: Color(0xFF069DD8),
+                                            width: _width / 180,
+                                          )),
                                     ),
                                     child: Text("Retype Password"),
                                   ),
@@ -664,36 +674,46 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                     //width: 300,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(10),
-                                        bottomRight: Radius.circular(10),
-                                      ),
-                                      border: Border.all(color: Colors.blue),
+                                          topRight: Radius.circular(10),
+                                          bottomRight: Radius.circular(10)),
                                     ),
 
                                     child: TextFormField(
-                                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
+                                        controller: retypePasswordController,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                          ),
                                         ),
-                                      ),
-                                      // validator: (value){
-                                      //   if(value!=passwordController){
-                                      //     return "Erroooooor!!!!";
-                                      //   }else return null;
-                                      // },
-                                      // onChanged: (value){
-                                      //   if (_formkey.currentState!.validate()) {
-                                      //     //print("Successfull");
-                                      //   }
-                                      // },
-
-                                    ),
+                                        // validator: (value){
+                                        //   if(value!=passwordController){
+                                        //     return "Erroooooor!!!!";
+                                        //   }else return null;
+                                        // },
+                                        onChanged: (value) {
+                                          setState(() {
+                                            retypePassword = value;
+                                            retypePasswordError = '';
+                                          });
+                                          _validateRetypeFields();
+                                        }),
                                   ),
                                 ),
                               ],
                             ),
                           ),
+                          if (retypePasswordError.isNotEmpty)
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  retypePasswordError,
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: _width / 26,
+                                      fontWeight: FontWeight.bold),
+                                )),
                           Row(
                             children: [
                               Checkbox(
@@ -736,7 +756,8 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.blue,
-                                            decoration: TextDecoration.underline),
+                                            decoration:
+                                                TextDecoration.underline),
                                       ))
                                 ],
                               ),
@@ -771,8 +792,12 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                                 onPressed: () {
                                   //phoneController.clear();
                                   // passwordController.clear();
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => HomeDemo()));
+                                  _validatePasswordFields();
+                                  _validateRetypeFields();
+                                  if(passwordError.isEmpty && retypePasswordError.isEmpty){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => HomeDemo()));
+                                  }
                                 },
                                 child: Text(
                                   "Submit",
@@ -799,8 +824,10 @@ class _ImageRegistrationState extends State<ImageRegistration> {
                               ),
                               InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => DemoSeller()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DemoSeller()));
                                   },
                                   child: Text(
                                     'Login',
@@ -824,20 +851,38 @@ class _ImageRegistrationState extends State<ImageRegistration> {
       ]),
     );
   }
+
   bool _isValidPassword(String password) {
     final RegExp passwordRegex =
-    RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+        RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
     return passwordRegex.hasMatch(password);
   }
 
   void _validatePasswordFields() {
-    if (password!.isEmpty) {
+    if (password.isEmpty) {
       setState(() {
         passwordError = 'Password Required';
       });
-    } else if (!_isValidPassword(password!)) {
+    } else if (!_isValidPassword(password)) {
       setState(() {
         passwordError = 'Please retype your password';
+      });
+    }
+      // else if (retypePassword != passwordController.text) {
+    //   setState(() {
+    //     passwordError = 'Update Your Retype Password';
+    //   });
+    // }
+  }
+
+  void _validateRetypeFields() {
+    if (retypePassword.isEmpty) {
+      setState(() {
+        retypePasswordError = 'Password Required';
+      });
+    } else if (retypePassword != passwordController.text) {
+      setState(() {
+        retypePasswordError = 'Password Must Be Matched';
       });
     }
   }
